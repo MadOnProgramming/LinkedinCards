@@ -1,0 +1,15 @@
+{
+  "name": "linkedin-card-pipeline",
+  "version": "1.0.0",
+  "description": "Auto screenshot and post LinkedIn cards",
+  "scripts": {
+    "screenshot": "node scripts/screenshot.js",
+    "upload": "node scripts/upload.js",
+    "post": "node scripts/post.js",
+    "run-all": "npm run screenshot && npm run upload && npm run post"
+  },
+  "dependencies": {
+    "cloudinary": "^2.5.1",
+    "puppeteer": "^22.0.0"
+  }
+}
