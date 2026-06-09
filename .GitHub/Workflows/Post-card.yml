@@ -1,0 +1,30 @@
+name: Post LinkedIn Card
+on:
+  push:
+    branches: [main]
+    paths: ['card.html', 'post_text.txt']
+  workflow_dispatch:
+    inputs:
+      post_text:
+        description: LinkedIn post text override
+        required: false
+jobs:
+  post-to-linkedin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: npm install
+      - run: node scripts/screenshot.js
+      - run: node scripts/upload.js
+        env:
+          CLOUDINARY_CLOUD_NAME: ${{ secrets.CLOUDINARY_CLOUD_NAME }}
+          CLOUDINARY_API_KEY: ${{ secrets.CLOUDINARY_API_KEY }}
+          CLOUDINARY_API_SECRET: ${{ secrets.CLOUDINARY_API_SECRET }}
+      - run: node scripts/post.js
+        env:
+          LINKEDIN_ACCESS_TOKEN: ${{ secrets.LINKEDIN_ACCESS_TOKEN }}
+          LINKEDIN_PERSON_URN: ${{ secrets.LINKEDIN_PERSON_URN }}
+          POST_TEXT: ${{ github.event.inputs.post_text }}
